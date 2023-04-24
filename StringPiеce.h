@@ -35,6 +35,10 @@ public:
 
 	friend StringPiåce& operator >> (const char* str, StringPiåce& sp);
 
+	StringPiåce& operator <<(int num);
+
+	friend StringPiåce& operator >> (int num, StringPiåce& sp);
+
 	void print() const;
 	void printAll() const;
 };

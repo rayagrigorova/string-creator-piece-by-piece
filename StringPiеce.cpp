@@ -1,5 +1,7 @@
 #include "StringPiåce.h"
 
+#include <cmath>
+
 namespace {
 
 	void myStrcpy(char* dest, const char* src) {
@@ -28,6 +30,33 @@ namespace {
 		}
 
 		return ctr;
+	}
+
+	int digitCount(int num) {
+		return int(log10(num) + 1);
+	}
+
+	void stringToInt(char* str, int num) {
+		if (str == nullptr) {
+			return;
+		}
+		int numberOfDigits = digitCount(num);
+
+		int startInd = 0;
+		int endInd = numberOfDigits;
+
+		if (num < 0) {
+			str[0] = '-';
+			startInd++;
+			endInd++;
+		}
+
+		for (int i = endInd - 1; i >= startInd; i--) {
+			str[i] = num % 10 + '0';
+			num /= 10;
+		}
+
+		str[endInd] = '\0';
 	}
 }
 
@@ -95,7 +124,7 @@ void StringPiåce::removeFirstKSymbols(size_t k) {
 		_start = _start + k;
 
 		// If the start is past the limit of the array
-		if (_start - _data > MAX_LEN) {
+		if (_start - _data >= MAX_LEN) {
 			// Move start to the beginning, a few positions to the right
 			// The number of positions to the right = the old position of start - MAX_LEN
 			_start = _data + ((_start - _data) - MAX_LEN);
@@ -226,3 +255,20 @@ void StringPiåce::printAll() const {
 	std::cout << std::endl;
 }
 
+// The max value of int is 2 147 483 647, which is 10 digits 
+// I will add one extra character for the minus sign.
+// + 1 for '\0'
+
+const int MAX_DIGITS_COUNT = 10;
+
+StringPiåce& StringPiåce::operator <<(int num) {
+	static char str[MAX_DIGITS_COUNT + 2];
+	stringToInt(str, num);
+	return *this << str;
+}
+
+StringPiåce& operator >> (int num, StringPiåce& sp) {
+	static char str[MAX_DIGITS_COUNT + 2];
+	stringToInt(str, num);
+	return str >> sp;
+}
