@@ -46,20 +46,19 @@ void StringPiåce::writeDataToString(char* str) const {
 		return;
 	}
 
+	const char* ptrStart = _start;
+	const char* ptrEnd = _end;
+
 	unsigned dataLen = getLength();
 
-	unsigned dataInd;
-	if (_start - _end < 0) {
-		dataInd = 0;
-	}
-
-	else {
-		dataInd = _start - _data;
-	}
-
 	for (int i = 0; i < dataLen; i++) {
-		str[i] = _data[dataInd++];
-		dataInd %= MAX_LEN;
+		str[i] = _data[ptrStart - _data];
+
+		ptrStart++;
+		if (ptrStart - _data >= MAX_LEN) {
+			ptrStart = _data;
+		}
+		
 	}
 }
 
@@ -70,7 +69,7 @@ StringPiåce::StringPiåce(const char* data) {
 void StringPiåce::setData(const char* data) {
 	unsigned len = myStrlen(data);
 
-	if (len > MAX_LEN) {
+	if (len > MAX_LEN || data == nullptr) {
 		return;
 	}
 
@@ -112,11 +111,15 @@ void StringPiåce::removeLastKSymbols(size_t k) {
 
 	else {
 		_end = _end - k;
+
+		if (_end - _data < 0) {
+			_end = _data + MAX_LEN + (_end - _data);
+		}
 	}
 }
 
 unsigned StringPiåce::getLength() const {
-	if (this == nullptr) {
+	if (this == nullptr || _start == _end) {
 		return 0;
 	}
 
@@ -142,13 +145,31 @@ StringPiåce& StringPiåce::operator <<(const char* str) {
 	if (strLen + pieceLen > MAX_LEN) {
 		return *this;
 	}
-	unsigned ind = _end - _data;
 
-	// Copy the string after the end and increase _end 
-	myStrcpy(_data + ind, str);
-	_end += (strLen - 1);
-	return *this;
+	if (pieceLen == 0) {
+		_end--;
+	}
+
+	for (int i = 0; i < strLen; i++) {
+		_end++;
+
+		// If _end goes past the bound of the array, point it to the first position in the array. 
+		if (_end - _data > MAX_LEN) {
+			_end = _data;
+		}
+
+		_data[_end - _data] = str[i];
+		// Move _end ptr right
+	}
+
+	//_end--;
+
+	//// If _end goes past the bound of the array, point it to the first position in the array. 
+	//if (_end - _data < 0) {
+	//	_end = _data;
+	//}
 }
+
 
  //Concatenate at the beginning 
 StringPiåce& operator >> (const char* str, StringPiåce& sp) {
@@ -159,18 +180,26 @@ StringPiåce& operator >> (const char* str, StringPiåce& sp) {
 		return sp;
 	}
 
-	// If this is the first time concatenating a string at the beginning, 
-	// move the _start pointer at the end of the char array, past _end 
-
-	if (sp._start - sp._end < 0) { // _start is before _end 
-		sp._start = sp._start + MAX_LEN - strLen; // move to the back of the array
+	if (dataLen == 0) {
+		sp._start++;
 	}
 
-	else { // start is already at the back of the array
-		sp._start -= strLen; // move it left 
+	for (int i = 0; i < strLen; i++) {
+		// Move _start ptr left 
+		sp._start--;
+
+		// If _start goes past the bound of the array, point it to the last position in the array. 
+		if (sp._start - sp._data < 0) {
+			sp._start = sp._data + MAX_LEN - 1;
+		}
+
+		sp._data[sp._start - sp._data] = str[strLen - 1 - i];
 	}
 
-	myStrcpy(sp._data + (sp._start - sp._data), str);
+	//sp._start++;
+	//if (sp._start - sp._data > MAX_LEN) {
+	//	sp._start = sp._data;
+	//}
 }
 
 void StringPiåce::print() const {
@@ -184,10 +213,10 @@ void StringPiåce::printAll() const {
 			std::cout << "END";
 		}
 
-		else if (_data + i == _start) {
+		if (_data + i == _start) {
 			std::cout << "START";
 		}
-		else  if (_data[i] == '\0') {
+		if (_data[i] == '\0') {
 			std::cout << "\\0-";
 		}
 		else
