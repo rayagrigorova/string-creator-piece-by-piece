@@ -15,7 +15,7 @@ int main()
 
     10 >> sc[2];
 
-    MyString result1 = sc.getString(); // test Hello friends 10football
+    MyString result1 = sc.getString(); // test Hello  friends 10football
     std::cout << "Res1: " << result1 << std::endl;
 
     sc.swap(1, 2);
@@ -37,7 +37,7 @@ int main()
     sc[3].removeLastKSymbols(1); // 6ight_NoDel lef
     sc[3] << "*"; // 6ight_NoDel lef*
 
-    sc.addPiece(" ___sss____  ", 1); // replace the deleted piece 
+    sc.addPiece(" ___sss____", 1); // replace the deleted piece 
 
     MyString result4 = sc.getString();
 

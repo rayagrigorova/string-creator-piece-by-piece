@@ -24,6 +24,7 @@ void StringCreaterPieceByPiece::resize() {
 
 	// Delete the old array of pointers but not the actual data
 	delete[] _pieces;
+
 	// Point to the new array
 	_pieces = newArr;
 }
@@ -38,7 +39,6 @@ void StringCreaterPieceByPiece::copyFrom(const StringCreaterPieceByPiece& other)
 	_numberOfPieces = other._numberOfPieces;
 	_capacity = other._capacity;
 }
-	
 
 StringCreaterPieceByPiece::StringCreaterPieceByPiece(const StringCreaterPieceByPiece& other) {
 	copyFrom(other);
@@ -76,7 +76,7 @@ void StringCreaterPieceByPiece::addPiece(const char* str) {
 }
 
 void StringCreaterPieceByPiece::swap(size_t ind1, size_t ind2) {
-	if (ind1 >= _numberOfPieces || ind2 >= _numberOfPieces) {
+	if (ind1 >= _numberOfPieces || ind2 >= _numberOfPieces || ind1 == ind2) {
 		return;
 	}
 
@@ -92,7 +92,7 @@ void StringCreaterPieceByPiece::remove(size_t ind) {
 		return;
 	}
 
-	// The piece is created using new 
+	// created using new -> delete 
 	delete _pieces[ind];
 	// Mark the piece as deleted 
 	_pieces[ind] = nullptr;
@@ -106,6 +106,7 @@ void StringCreaterPieceByPiece::addPiece(const char* str, size_t ind) {
 	// Delete the old piece in case it exists
 	// If it doesn't, the pointer is set to nullptr
 	// and delete will not do anything. 
+
 	delete _pieces[ind];
 
 	_pieces[ind] =  new StringPiåce(str);
@@ -164,7 +165,6 @@ MyString StringCreaterPieceByPiece::getString() const {
 		}
 
 	}
-
 
 	arr[size] = '\0';
 

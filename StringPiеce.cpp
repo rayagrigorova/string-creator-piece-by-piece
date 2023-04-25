@@ -1,5 +1,6 @@
 #include "StringPiåce.h"
 
+#include <iostream>
 #include <cmath>
 
 namespace {
@@ -40,6 +41,7 @@ namespace {
 		if (str == nullptr) {
 			return;
 		}
+
 		int numberOfDigits = digitCount(num);
 
 		int startInd = 0;
@@ -61,10 +63,8 @@ namespace {
 }
 
 const char* StringPiåce::getData() const {
-	unsigned dataLen = getLength();
-	
 	static char arr[MAX_LEN + 1];
-
+	unsigned dataLen = getLength();
 	writeDataToString(arr);
 
 	return arr;
@@ -82,8 +82,8 @@ void StringPiåce::writeDataToString(char* str) const {
 
 	for (int i = 0; i < dataLen; i++) {
 		str[i] = _data[ptrStart - _data];
-
 		ptrStart++;
+
 		if (ptrStart - _data >= MAX_LEN) {
 			ptrStart = _data;
 		}
@@ -98,10 +98,11 @@ StringPiåce::StringPiåce(const char* data) {
 void StringPiåce::setData(const char* data) {
 	unsigned len = myStrlen(data);
 
-	if (len > MAX_LEN || data == nullptr) {
+	if (len > MAX_LEN) {
 		return;
 	}
 
+	// Length will be 0 if data is the empty string or data == nullptr
 	if (len == 0) {
 		_data[0] = ' ';
 		_start = _end = _data;
@@ -110,7 +111,7 @@ void StringPiåce::setData(const char* data) {
 
 	myStrcpy(_data, data);
 	_start = _data;
-	_end = _data + myStrlen(data) - 1;
+	_end = _data + len - 1;
 }
 
 void StringPiåce::removeFirstKSymbols(size_t k) {
@@ -126,7 +127,7 @@ void StringPiåce::removeFirstKSymbols(size_t k) {
 		// If the start is past the limit of the array
 		if (_start - _data >= MAX_LEN) {
 			// Move start to the beginning, a few positions to the right
-			// The number of positions to the right = the old position of start - MAX_LEN
+			// The number of positions to the right is the old position of start - MAX_LEN
 			_start = _data + ((_start - _data) - MAX_LEN);
 		}
 	}
@@ -155,6 +156,8 @@ unsigned StringPiåce::getLength() const {
 	int diff = _start - _end;
 
 	// If diff is > 0, then _start is after _end 
+	// In this case, diff - 1 is the number of elements in the array between _start and _end.
+	// The length of the array = MAX_LEN - ( diff - 1 ).
 	return diff > 0? MAX_LEN - diff + 1 : diff * -1 + 1;
 }
 
@@ -166,6 +169,12 @@ void StringPiåce::changeSymbolAt(size_t ind, char ch) {
 	_data[ind] = ch;
 }
 
+// The max value of int is 2 147 483 647, which is 10 digits 
+// I will add one extra character for the minus sign.
+// + 1 for '\0'
+
+const int MAX_DIGITS_COUNT = 10;
+
 // Concatenate at the end 
 StringPiåce& StringPiåce::operator <<(const char* str) {
 	unsigned strLen = myStrlen(str);
@@ -175,11 +184,13 @@ StringPiåce& StringPiåce::operator <<(const char* str) {
 		return *this;
 	}
 
+	// If the string is empty 
 	if (pieceLen == 0) {
 		_end--;
 	}
 
 	for (int i = 0; i < strLen; i++) {
+		// Move _end ptr right
 		_end++;
 
 		// If _end goes past the bound of the array, point it to the first position in the array. 
@@ -188,17 +199,8 @@ StringPiåce& StringPiåce::operator <<(const char* str) {
 		}
 
 		_data[_end - _data] = str[i];
-		// Move _end ptr right
 	}
-
-	//_end--;
-
-	//// If _end goes past the bound of the array, point it to the first position in the array. 
-	//if (_end - _data < 0) {
-	//	_end = _data;
-	//}
 }
-
 
  //Concatenate at the beginning 
 StringPiåce& operator >> (const char* str, StringPiåce& sp) {
@@ -209,6 +211,7 @@ StringPiåce& operator >> (const char* str, StringPiåce& sp) {
 		return sp;
 	}
 
+	// If the string is empty 
 	if (dataLen == 0) {
 		sp._start++;
 	}
@@ -224,42 +227,7 @@ StringPiåce& operator >> (const char* str, StringPiåce& sp) {
 
 		sp._data[sp._start - sp._data] = str[strLen - 1 - i];
 	}
-
-	//sp._start++;
-	//if (sp._start - sp._data > MAX_LEN) {
-	//	sp._start = sp._data;
-	//}
 }
-
-void StringPiåce::print() const {
-	const char* data = getData();
-	std::cout << data << std::endl;
-}
-
-void StringPiåce::printAll() const {
-	for (int i = 0; i < MAX_LEN; i++) {
-		if (_data + i == _end) {
-			std::cout << "END";
-		}
-
-		if (_data + i == _start) {
-			std::cout << "START";
-		}
-		if (_data[i] == '\0') {
-			std::cout << "\\0-";
-		}
-		else
-		std::cout << _data[i] << '-';
-	}
-
-	std::cout << std::endl;
-}
-
-// The max value of int is 2 147 483 647, which is 10 digits 
-// I will add one extra character for the minus sign.
-// + 1 for '\0'
-
-const int MAX_DIGITS_COUNT = 10;
 
 StringPiåce& StringPiåce::operator <<(int num) {
 	static char str[MAX_DIGITS_COUNT + 2];
@@ -272,3 +240,4 @@ StringPiåce& operator >> (int num, StringPiåce& sp) {
 	stringToInt(str, num);
 	return str >> sp;
 }
+
