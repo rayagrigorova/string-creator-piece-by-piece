@@ -30,14 +30,13 @@ void StringCreaterPieceByPiece::resize() {
 }
 
 void StringCreaterPieceByPiece::copyFrom(const StringCreaterPieceByPiece& other) {
-	_pieces = new StringPiåce*[other._capacity]{nullptr};
 	_numberOfPieces = other._numberOfPieces;
 	_capacity = other._capacity;
+	_pieces = new StringPiåce*[_capacity]{nullptr};
 
 	for (int i = 0; i < _capacity; i++) {
 		_pieces[i] = other._pieces[i];
 	}
-
 }
 
 StringCreaterPieceByPiece::StringCreaterPieceByPiece(const StringCreaterPieceByPiece& other) {
@@ -106,9 +105,7 @@ void StringCreaterPieceByPiece::addPiece(const char* str, size_t ind) {
 	// Delete the old piece in case it exists
 	// If it doesn't, the pointer is set to nullptr
 	// and delete will not do anything. 
-
 	delete _pieces[ind];
-
 	_pieces[ind] =  new StringPiåce(str);
 }
 

@@ -37,7 +37,7 @@ namespace {
 		return int(log10(num) + 1);
 	}
 
-	void stringToInt(char* str, int num) {
+	void intToString(char* str, int num) {
 		if (str == nullptr) {
 			return;
 		}
@@ -65,7 +65,6 @@ namespace {
 const char* StringPiåce::getData() const {
 	static char arr[MAX_LEN + 1];
 	writeDataToString(arr);
-
 	return arr;
 }
 
@@ -95,13 +94,17 @@ StringPiåce::StringPiåce(const char* data) {
 }
 
 void StringPiåce::setData(const char* data) {
+	if (data == nullptr) {
+		return;
+	}
+
 	unsigned len = myStrlen(data);
 
 	if (len > MAX_LEN) {
 		return;
 	}
 
-	// Length will be 0 if data is the empty string or data == nullptr
+	// Length will be 0 if data is the empty string
 	if (len == 0) {
 		_data[0] = '\0';
 		_start = _end = _data;
@@ -162,7 +165,7 @@ unsigned StringPiåce::getLength() const {
 	// In this case, diff - 1 is the number of elements in the array between _start and _end.
 	// Then, the length of the array == MAX_LEN - ( diff - 1 ).
 
-	// If diff < 0, _start is before _end. 
+	// If diff <= 0, _start is before(or equal to) _end. 
 	return diff > 0? MAX_LEN - diff + 1 : diff * -1 + 1;
 }
 
@@ -240,13 +243,13 @@ const int MAX_DIGITS_COUNT = 10;
 
 StringPiåce& StringPiåce::operator <<(int num) {
 	static char str[MAX_DIGITS_COUNT + 2];
-	stringToInt(str, num);
+	intToString(str, num);
 	return *this << str;
 }
 
 StringPiåce& operator >> (int num, StringPiåce& sp) {
 	static char str[MAX_DIGITS_COUNT + 2];
-	stringToInt(str, num);
+	intToString(str, num);
 	return str >> sp;
 }
 
