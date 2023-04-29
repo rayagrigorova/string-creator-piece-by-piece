@@ -1,6 +1,6 @@
 #include "StringCreaterPieceByPiece.h"
 
-void StringCreaterPieceByPiece::free() {
+void StringCreatorPieceByPiece::free() {
 	// The pieces are created using operator new 
 	for (int i = 0; i < _numberOfPieces; i++) {
 		delete _pieces[i];
@@ -13,7 +13,7 @@ void StringCreaterPieceByPiece::free() {
 	_numberOfPieces = _capacity = 0;
 }
 
-void StringCreaterPieceByPiece::resize() {
+void StringCreatorPieceByPiece::resize() {
 	_capacity *= 2;
 	StringPiåce** newArr = new StringPiåce*[_capacity]{nullptr};
 
@@ -29,7 +29,7 @@ void StringCreaterPieceByPiece::resize() {
 	_pieces = newArr;
 }
 
-void StringCreaterPieceByPiece::copyFrom(const StringCreaterPieceByPiece& other) {
+void StringCreatorPieceByPiece::copyFrom(const StringCreatorPieceByPiece& other) {
 	_numberOfPieces = other._numberOfPieces;
 	_capacity = other._capacity;
 	_pieces = new StringPiåce*[_capacity]{nullptr};
@@ -39,11 +39,11 @@ void StringCreaterPieceByPiece::copyFrom(const StringCreaterPieceByPiece& other)
 	}
 }
 
-StringCreaterPieceByPiece::StringCreaterPieceByPiece(const StringCreaterPieceByPiece& other) {
+StringCreatorPieceByPiece::StringCreatorPieceByPiece(const StringCreatorPieceByPiece& other) {
 	copyFrom(other);
 }
 
-StringCreaterPieceByPiece& StringCreaterPieceByPiece::operator=(const StringCreaterPieceByPiece& other){
+StringCreatorPieceByPiece& StringCreatorPieceByPiece::operator=(const StringCreatorPieceByPiece& other){
 	if (this != &other) {
 		free();
 		copyFrom(other);
@@ -52,11 +52,11 @@ StringCreaterPieceByPiece& StringCreaterPieceByPiece::operator=(const StringCrea
 	return *this;
 }
 
-StringCreaterPieceByPiece::~StringCreaterPieceByPiece() {
+StringCreatorPieceByPiece::~StringCreatorPieceByPiece() {
 	free();
 }
 
-StringCreaterPieceByPiece::StringCreaterPieceByPiece(unsigned capacity) {
+StringCreatorPieceByPiece::StringCreatorPieceByPiece(unsigned capacity) {
 	// Creating an array of size 0 shouldn't be possible
 	if (capacity == 0) {
 		return;
@@ -66,7 +66,7 @@ StringCreaterPieceByPiece::StringCreaterPieceByPiece(unsigned capacity) {
 	_pieces = new StringPiåce * [capacity] {nullptr};
 }
 
-void StringCreaterPieceByPiece::addPiece(const char* str) {
+void StringCreatorPieceByPiece::addPiece(const char* str) {
 	if (_numberOfPieces >= _capacity) {
 		resize();
 	}
@@ -74,7 +74,7 @@ void StringCreaterPieceByPiece::addPiece(const char* str) {
 	_pieces[_numberOfPieces++] = new StringPiåce(str);
 }
 
-void StringCreaterPieceByPiece::swap(size_t ind1, size_t ind2) {
+void StringCreatorPieceByPiece::swap(size_t ind1, size_t ind2) {
 	if (ind1 >= _numberOfPieces || ind2 >= _numberOfPieces || ind1 == ind2) {
 		return;
 	}
@@ -86,7 +86,7 @@ void StringCreaterPieceByPiece::swap(size_t ind1, size_t ind2) {
 	_pieces[ind2] = temp;
 }
 
-void StringCreaterPieceByPiece::remove(size_t ind) {
+void StringCreatorPieceByPiece::remove(size_t ind) {
 	if (ind >= _numberOfPieces) {
 		return;
 	}
@@ -97,7 +97,7 @@ void StringCreaterPieceByPiece::remove(size_t ind) {
 	_pieces[ind] = nullptr;
 }
 
-void StringCreaterPieceByPiece::addPiece(const char* str, size_t ind) {
+void StringCreatorPieceByPiece::addPiece(const char* str, size_t ind) {
 	if (ind >= _numberOfPieces) {
 		return;
 	}
@@ -109,7 +109,7 @@ void StringCreaterPieceByPiece::addPiece(const char* str, size_t ind) {
 	_pieces[ind] =  new StringPiåce(str);
 }
 
-unsigned StringCreaterPieceByPiece::length() const {
+unsigned StringCreatorPieceByPiece::length() const {
 	unsigned len = 0;
 
 	// Sum the length of all the pieces 
@@ -122,7 +122,7 @@ unsigned StringCreaterPieceByPiece::length() const {
 
 const size_t NUMBER_OF_SPACES = 20;
 
-MyString StringCreaterPieceByPiece::getString() const {
+MyString StringCreatorPieceByPiece::getString() const {
 	unsigned size = 0;
 
 	// Create an array with the sizes of the pieces 
@@ -169,6 +169,6 @@ MyString StringCreaterPieceByPiece::getString() const {
 }
 
 
-StringPiåce& StringCreaterPieceByPiece::operator[](size_t index) {
+StringPiåce& StringCreatorPieceByPiece::operator[](size_t index) {
 	return *_pieces[index];
 }

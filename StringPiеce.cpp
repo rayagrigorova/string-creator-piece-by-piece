@@ -142,6 +142,8 @@ void StringPiåce::removeLastKSymbols(size_t k) {
 	else {
 		_end = _end - k;
 
+		// If _end is past the limit of the array, move it to the end of the array, a few positions to the left. 
+		// The number of positions to the left is MAX_LEN + the difference between _end and data. 
 		if (_end - _data < 0) {
 			_end = _data + MAX_LEN + (_end - _data);
 		}
@@ -157,6 +159,7 @@ unsigned StringPiåce::getLength() const {
 
 	int diff = _start - _end;
 
+	// _data is the empty string
 	if (diff == 0 && _data[0] == '\0') {
 		return 0;
 	}

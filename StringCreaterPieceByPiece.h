@@ -3,7 +3,7 @@
 #include "StringPiåce.h"
 #include "MyString.h"
 
-class StringCreaterPieceByPiece {
+class StringCreatorPieceByPiece {
 
 	// I chose to use an array of pointers to string pieces
 	// Motivation: adding and swapping pieces will be easier;
@@ -16,17 +16,17 @@ class StringCreaterPieceByPiece {
 	unsigned _capacity = 0;
 
 	void free();
-	void copyFrom(const StringCreaterPieceByPiece& other);
+	void copyFrom(const StringCreatorPieceByPiece& other);
 	void resize();
 
 public:
 	// Big 4 - the array of pieces is dynamic 
-	StringCreaterPieceByPiece() = default;
-	StringCreaterPieceByPiece(const StringCreaterPieceByPiece& other);
-	StringCreaterPieceByPiece& operator=(const StringCreaterPieceByPiece& other);
-	~StringCreaterPieceByPiece();
+	StringCreatorPieceByPiece() = default;
+	StringCreatorPieceByPiece(const StringCreatorPieceByPiece& other);
+	StringCreatorPieceByPiece& operator=(const StringCreatorPieceByPiece& other);
+	~StringCreatorPieceByPiece();
 
-	StringCreaterPieceByPiece(unsigned capacity);
+	StringCreatorPieceByPiece(unsigned capacity);
 
 	void addPiece(const char* str = nullptr);
 	void addPiece(const char* str, size_t ind);

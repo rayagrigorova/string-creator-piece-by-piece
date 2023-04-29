@@ -3,7 +3,7 @@
 #include "StringCreaterPieceByPiece.h"
 
 int main() {
-    StringCreaterPieceByPiece sc(2);
+    StringCreatorPieceByPiece sc(2);
 
     sc.addPiece("test");
     sc.addPiece();
