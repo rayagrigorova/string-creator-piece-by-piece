@@ -2,8 +2,7 @@
 
 #include "StringCreaterPieceByPiece.h"
 
-int main()
-{
+int main() {
     StringCreaterPieceByPiece sc(2);
 
     sc.addPiece("test");
@@ -13,16 +12,16 @@ int main()
     sc[1] <<  " friends ";
     " Hello " >> sc[1];
 
-    10 >> sc[2];
+    123456 >> sc[2];
 
-    MyString result1 = sc.getString(); // test Hello  friends 10football
+    MyString result1 = sc.getString(); // test Hello  friends 123456football
     std::cout << "Res1: " << result1 << std::endl;
 
-    sc.swap(1, 2);
-    MyString result2 = sc.getString(); // test10football Hello friends
+    sc.swap(1, 2); // Swap ' Hello  friends ' and '123456football'
+    MyString result2 = sc.getString(); // test123456football Hello friends
     std::cout << "Res2: " << result2 << std::endl;
 
-    sc.remove(1);
+    sc.remove(1); // Remove '123456football'
     MyString result3 = sc.getString(); // test                     Hello friends
     std::cout << "Res3: " << result3 << std::endl;
 
@@ -41,6 +40,6 @@ int main()
 
     MyString result4 = sc.getString();
 
-    std::cout << "Res3: " << result4 << std::endl;
-    std::cout << "Size: " << sc.length() << std::endl;
+    std::cout << "Res4: " << result4 << std::endl;
+    std::cout << "Size: " << sc.length() << std::endl; // 47
 }

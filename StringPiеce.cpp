@@ -64,7 +64,6 @@ namespace {
 
 const char* StringPiåce::getData() const {
 	static char arr[MAX_LEN + 1];
-	unsigned dataLen = getLength();
 	writeDataToString(arr);
 
 	return arr;
@@ -104,7 +103,7 @@ void StringPiåce::setData(const char* data) {
 
 	// Length will be 0 if data is the empty string or data == nullptr
 	if (len == 0) {
-		_data[0] = ' ';
+		_data[0] = '\0';
 		_start = _end = _data;
 		return;
 	}
@@ -116,7 +115,6 @@ void StringPiåce::setData(const char* data) {
 
 void StringPiåce::removeFirstKSymbols(size_t k) {
 	if (k > getLength()) {
-		// Set the string to the empty string 
 		setData(nullptr);
 	}
 
@@ -135,7 +133,6 @@ void StringPiåce::removeFirstKSymbols(size_t k) {
 
 void StringPiåce::removeLastKSymbols(size_t k) {
 	if (k > getLength()) {
-		// Set the string to the empty string 
 		setData(nullptr);
 	}
 
@@ -149,15 +146,23 @@ void StringPiåce::removeLastKSymbols(size_t k) {
 }
 
 unsigned StringPiåce::getLength() const {
+	// The 'this == nullptr' check prevents null pointer dereference
+	// when iterating through an array of stringPieces. 
 	if (this == nullptr || _start == _end) {
 		return 0;
 	}
 
 	int diff = _start - _end;
 
+	if (diff == 0 && _data[0] == '\0') {
+		return 0;
+	}
+
 	// If diff is > 0, then _start is after _end 
 	// In this case, diff - 1 is the number of elements in the array between _start and _end.
-	// The length of the array = MAX_LEN - ( diff - 1 ).
+	// Then, the length of the array == MAX_LEN - ( diff - 1 ).
+
+	// If diff < 0, _start is before _end. 
 	return diff > 0? MAX_LEN - diff + 1 : diff * -1 + 1;
 }
 
@@ -169,12 +174,6 @@ void StringPiåce::changeSymbolAt(size_t ind, char ch) {
 	_data[ind] = ch;
 }
 
-// The max value of int is 2 147 483 647, which is 10 digits 
-// I will add one extra character for the minus sign.
-// + 1 for '\0'
-
-const int MAX_DIGITS_COUNT = 10;
-
 // Concatenate at the end 
 StringPiåce& StringPiåce::operator <<(const char* str) {
 	unsigned strLen = myStrlen(str);
@@ -184,7 +183,7 @@ StringPiåce& StringPiåce::operator <<(const char* str) {
 		return *this;
 	}
 
-	// If the string is empty 
+	// If the string is empty, start saving data from the first position in the array 
 	if (pieceLen == 0) {
 		_end--;
 	}
@@ -200,6 +199,8 @@ StringPiåce& StringPiåce::operator <<(const char* str) {
 
 		_data[_end - _data] = str[i];
 	}
+
+	return *this;
 }
 
  //Concatenate at the beginning 
@@ -211,7 +212,7 @@ StringPiåce& operator >> (const char* str, StringPiåce& sp) {
 		return sp;
 	}
 
-	// If the string is empty 
+	// If the string is empty, start saving data from the first position in the array 
 	if (dataLen == 0) {
 		sp._start++;
 	}
@@ -225,9 +226,17 @@ StringPiåce& operator >> (const char* str, StringPiåce& sp) {
 			sp._start = sp._data + MAX_LEN - 1;
 		}
 
+		// The string is saved starting from its end. 
 		sp._data[sp._start - sp._data] = str[strLen - 1 - i];
 	}
+
+	return sp;
 }
+
+// The max value of int is 2 147 483 647, which is 10 digits 
+// I will add one extra character for the minus sign and one more for '\0'
+
+const int MAX_DIGITS_COUNT = 10;
 
 StringPiåce& StringPiåce::operator <<(int num) {
 	static char str[MAX_DIGITS_COUNT + 2];

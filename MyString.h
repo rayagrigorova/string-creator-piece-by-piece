@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 
+// Source: https://github.com/Angeld55/Object-oriented_programming_FMI/tree/master/Week%2007/String
 class MyString
 {
 	char* _data;

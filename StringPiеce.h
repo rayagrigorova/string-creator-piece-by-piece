@@ -10,7 +10,7 @@ class StringPiåce {
 	const char* _end = _data;
 
 public:
-	StringPiåce() = default;
+	StringPiåce() { _data[0] = '\0'; };
 
 	StringPiåce(const char* data);
 
@@ -24,9 +24,10 @@ public:
 
 	unsigned getLength() const;
 
+	// Save the data contained in the stringPiece to a string 
 	void writeDataToString(char* str) const;
 
-	// This can be a class member because the left argument is a string piece
+	// These functions can be class members because the left argument is a string piece
 	StringPiåce& operator <<(const char* str);
 	StringPiåce& operator <<(int num); // overload
 

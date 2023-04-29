@@ -31,13 +31,13 @@ void StringCreaterPieceByPiece::resize() {
 
 void StringCreaterPieceByPiece::copyFrom(const StringCreaterPieceByPiece& other) {
 	_pieces = new StringPiåce*[other._capacity]{nullptr};
+	_numberOfPieces = other._numberOfPieces;
+	_capacity = other._capacity;
 
-	for (int i = 0; i < other._numberOfPieces; i++) {
+	for (int i = 0; i < _capacity; i++) {
 		_pieces[i] = other._pieces[i];
 	}
 
-	_numberOfPieces = other._numberOfPieces;
-	_capacity = other._capacity;
 }
 
 StringCreaterPieceByPiece::StringCreaterPieceByPiece(const StringCreaterPieceByPiece& other) {
@@ -123,21 +123,20 @@ unsigned StringCreaterPieceByPiece::length() const {
 	return len;
 }
 
+const size_t NUMBER_OF_SPACES = 20;
+
 MyString StringCreaterPieceByPiece::getString() const {
 	unsigned size = 0;
 
 	// Create an array with the sizes of the pieces 
 	size_t* pieceSizes = new size_t[_numberOfPieces];
 
-	// Initialize it
 	for (int i = 0; i < _numberOfPieces; i++) {
 		pieceSizes[i] = _pieces[i]->getLength();
-	}
 
-	// Now, initialize the size of the string to be created 
-	for (int i = 0; i < _numberOfPieces; i++) {
+		// Initialize the size of the string to be created
 		if (_pieces[i] == nullptr && i != _numberOfPieces - 1) {
-			size += 20;
+			size += NUMBER_OF_SPACES;
 		}
 
 		else {
@@ -158,10 +157,10 @@ MyString StringCreaterPieceByPiece::getString() const {
 
 		// The piece was deleted 
 		else {
-			for (int j = 0; j < 20; j++) {
+			for (int j = 0; j < NUMBER_OF_SPACES; j++) {
 				*(ptr + j) = ' ';
 			}
-			ptr += 20;
+			ptr += NUMBER_OF_SPACES;
 		}
 
 	}
@@ -173,7 +172,6 @@ MyString StringCreaterPieceByPiece::getString() const {
 }
 
 
-StringPiåce& StringCreaterPieceByPiece::operator[](size_t index)
-{
+StringPiåce& StringCreaterPieceByPiece::operator[](size_t index) {
 	return *_pieces[index];
 }

@@ -6,12 +6,12 @@
 class StringCreaterPieceByPiece {
 
 	// I chose to use an array of pointers to string pieces
-	// The reason: adding and swapping pieces will be easier;
+	// Motivation: adding and swapping pieces will be easier;
 	// resizing is faster because only pointers to strings are being copied;
 	// it will be possible to mark a piece as deleted - by setting
 	// the corresponding pointer in the array to nullptr. 
 
-	StringPiåce** _pieces;
+	StringPiåce** _pieces = nullptr;
 	unsigned _numberOfPieces = 0;
 	unsigned _capacity = 0;
 
@@ -20,7 +20,6 @@ class StringCreaterPieceByPiece {
 	void resize();
 
 public:
-
 	// Big 4 - the array of pieces is dynamic 
 	StringCreaterPieceByPiece() = default;
 	StringCreaterPieceByPiece(const StringCreaterPieceByPiece& other);
