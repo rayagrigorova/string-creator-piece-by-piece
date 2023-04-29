@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 
-#include "StringCreaterPieceByPiece.h"
+#include "StringCreatorPieceByPiece.h"
 
 int main() {
     StringCreatorPieceByPiece sc(2);
