@@ -1,6 +1,6 @@
 #pragma once
 
-#include "StringPiåce.h"
+#include "StringPiÃ¥ce.h"
 #include "MyString.h"
 
 class StringCreatorPieceByPiece {
@@ -11,7 +11,7 @@ class StringCreatorPieceByPiece {
 	// it will be possible to mark a piece as deleted - by setting
 	// the corresponding pointer in the array to nullptr. 
 
-	StringPiåce** _pieces = nullptr;
+	StringPiÃ¥ce** _pieces = nullptr;
 	unsigned _numberOfPieces = 0;
 	unsigned _capacity = 0;
 
@@ -37,7 +37,7 @@ public:
 
 	unsigned length() const;
 
-	StringPiåce& operator[](size_t index);
+	StringPiÃ¥ce& operator[](size_t index);
 
 	MyString getString() const;
 };
