@@ -1,4 +1,4 @@
-#include "StringCreaterPieceByPiece.h"
+#include "StringCreatorPieceByPiece.h"
 
 void StringCreatorPieceByPiece::free() {
 	// The pieces are created using operator new 
@@ -15,7 +15,7 @@ void StringCreatorPieceByPiece::free() {
 
 void StringCreatorPieceByPiece::resize() {
 	_capacity *= 2;
-	StringPiåce** newArr = new StringPiåce*[_capacity]{nullptr};
+	StringPiece** newArr = new StringPiece*[_capacity]{nullptr};
 
 	// Copy the old array of pointers to the new one 
 	for (int i = 0; i < _numberOfPieces; i++) {
@@ -32,7 +32,7 @@ void StringCreatorPieceByPiece::resize() {
 void StringCreatorPieceByPiece::copyFrom(const StringCreatorPieceByPiece& other) {
 	_numberOfPieces = other._numberOfPieces;
 	_capacity = other._capacity;
-	_pieces = new StringPiåce*[_capacity]{nullptr};
+	_pieces = new StringPiece*[_capacity]{nullptr};
 
 	for (int i = 0; i < _capacity; i++) {
 		_pieces[i] = other._pieces[i];
@@ -63,7 +63,7 @@ StringCreatorPieceByPiece::StringCreatorPieceByPiece(unsigned capacity) {
 	}
 
 	_capacity = capacity;
-	_pieces = new StringPiåce * [capacity] {nullptr};
+	_pieces = new StringPiece * [capacity] {nullptr};
 }
 
 void StringCreatorPieceByPiece::addPiece(const char* str) {
@@ -71,7 +71,7 @@ void StringCreatorPieceByPiece::addPiece(const char* str) {
 		resize();
 	}
 
-	_pieces[_numberOfPieces++] = new StringPiåce(str);
+	_pieces[_numberOfPieces++] = new StringPiece(str);
 }
 
 void StringCreatorPieceByPiece::swap(size_t ind1, size_t ind2) {
@@ -80,7 +80,7 @@ void StringCreatorPieceByPiece::swap(size_t ind1, size_t ind2) {
 	}
 
 	// Only pointers are swapped 
-	StringPiåce* temp;
+	StringPiece* temp;
 	temp = _pieces[ind1];
 	_pieces[ind1] = _pieces[ind2];
 	_pieces[ind2] = temp;
@@ -106,7 +106,7 @@ void StringCreatorPieceByPiece::addPiece(const char* str, size_t ind) {
 	// If it doesn't, the pointer is set to nullptr
 	// and delete will not do anything. 
 	delete _pieces[ind];
-	_pieces[ind] =  new StringPiåce(str);
+	_pieces[ind] =  new StringPiece(str);
 }
 
 unsigned StringCreatorPieceByPiece::length() const {
@@ -169,6 +169,6 @@ MyString StringCreatorPieceByPiece::getString() const {
 }
 
 
-StringPiåce& StringCreatorPieceByPiece::operator[](size_t index) {
+StringPiÃ¥ce& StringCreatorPieceByPiece::operator[](size_t index) {
 	return *_pieces[index];
 }
